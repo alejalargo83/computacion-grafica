@@ -1,11 +1,3 @@
-""" Desarrollado por: Francisco Alejandro Medina. 
-e-mail: famedina@utp.edu.co
-
----------------------------------------
-Visor de Imágenes
----------------------------------------
-"""
-
 from ctypes import alignment
 from tkinter import *
 
@@ -31,22 +23,41 @@ txtImage.grid(row=2, column=1, columnspan=3, sticky=W)
 
 
 def ImagenCapaRoja(MyImagen):
-    # Quitar plt no lo necesitamos porque el que ahora muestra la imagen 
-    # es tkinter
-    # MyImagen = plt.imread(MyImagen) / 255
+    # Quitar plt no lo necesitamos porque el que ahora muestra la imagen es tkinter
     ImagenCapaRoja = np.copy(MyImagen)
     ImagenCapaRoja[:, :, 1] = 0  # Capa Verde
     ImagenCapaRoja[:, :, 2] = 0  # Capa Azul
     return ImagenCapaRoja
 
-
 def ImagenCapaVerde(MyImagen):
-    # MyImagen = plt.imread(MyImagen) / 255
     ImagenCapaVerde = np.copy(MyImagen)
     ImagenCapaVerde[:, :, 0] = 0  # Capa Roja
     ImagenCapaVerde[:, :, 2] = 0  # Capa Azul
     return ImagenCapaVerde
 
+def ImagenCapaAzul(MyImagen):
+    ImagenCapaAzul = np.copy(MyImagen)
+    ImagenCapaAzul[:, :, 0] = 0  # Capa Roja
+    ImagenCapaAzul[:, :, 1] = 0  # Capa Verde
+    return ImagenCapaAzul
+
+def ImagenCapaCian(MyImagen):
+    ImagenCapaCian = np.copy(MyImagen)
+    ImagenCapaCian[:, :, 1] = 1  # Capa Magenta
+    ImagenCapaCian[:, :, 2] = 1  # Capa Amarilla
+    return ImagenCapaCian
+
+def ImagenCapaMagenta(MyImagen):
+    ImagenCapaMagenta = np.copy(MyImagen)
+    ImagenCapaMagenta[:, :, 0] = 1  # Capa Cian
+    ImagenCapaMagenta[:, :, 2] = 1   # Capa Amarilla
+    return ImagenCapaMagenta
+
+def ImagenCapaAmarilla(MyImagen):
+    ImagenCapaAmarilla = np.copy(MyImagen)
+    ImagenCapaAmarilla[:, :, 0] = 1  # Capa Magenta
+    ImagenCapaAmarilla[:, :, 1] = 1  # Capa Cian
+    return ImagenCapaAmarilla
 
 # Label para mostrar Imagen
 LbImage = Label(
@@ -80,6 +91,18 @@ def CargarImagen(color: str = None):
     elif color == "green":
         new_image = ImagenCapaVerde(np.asarray(Imagen))
         change_image = True
+    elif color == "blue":
+        new_image = ImagenCapaAzul(np.asarray(Imagen))
+        change_image = True
+    elif color == "cian":
+        new_image = ImagenCapaCian(np.asarray(Imagen))
+        change_image = True
+    elif color == "magenta":
+        new_image = ImagenCapaMagenta(np.asarray(Imagen))
+        change_image = True
+    elif color == "amarillo":
+        new_image = ImagenCapaAmarilla(np.asarray(Imagen))
+        change_image = True
 
     if change_image:
         # La adaptamos nuevamente a imagenes de PIL
@@ -87,7 +110,7 @@ def CargarImagen(color: str = None):
 
     # NOTA: Esta funcion toma un argumento que es de tipo str
     # y ademas es opcional, si este no viene, entonces la imagen
-    # sera la noraml sin ediciones
+    # sera la normal sin ediciones
 
     Imagen = Imagen.resize((650, 500), Image.ADAPTIVE)
     Imagen = ImageTk.PhotoImage(Imagen)
@@ -115,9 +138,7 @@ def OpenFile():
 
 # Boton para explorar ficheros
 
-btnExplorarArchivos = Button(
-    Window, text="Cargar Imagen", width=20, command=lambda: OpenFile()
-)
+btnExplorarArchivos = Button(Window, text="Cargar Imagen", width=20, command=lambda: OpenFile())
 btnExplorarArchivos.grid(row=2, column=0, sticky=W)
 
 
@@ -146,7 +167,7 @@ ChkOpcion2 = Button(frame_2, text="Red", width=20, command=lambda: CargarImagen(
 ChkOpcion2.grid(column=1, row=7, sticky=W)
 ChkOpcion3 = Button(frame_2, text="Green", width=20, command=lambda: CargarImagen(color="green"))
 ChkOpcion3.grid(column=1, row=8, sticky=W)
-ChkOpcion4 = Button(frame_2, text="Blue", width=20, command=lambda: CargarImagen())
+ChkOpcion4 = Button(frame_2, text="Blue", width=20, command=lambda: CargarImagen(color="blue"))
 ChkOpcion4.grid(column=1, row=9, sticky=W)
 
 """Se crean los botones para los diferentes canales CMYK (cian, magenta, amarillo)"""
@@ -154,16 +175,13 @@ ChkOpcion4.grid(column=1, row=9, sticky=W)
 ChkOpcion5 = Label(frame_2, text="Canales CMYK:", font=("Arial Bold", 10))
 ChkOpcion5.grid(column=0, row=12, sticky=W)
 
-ChkOpcion6 = Button(frame_2, text="Cian", width=20, command=lambda: CargarImagen())
+ChkOpcion6 = Button(frame_2, text="Cian", width=20, command=lambda: CargarImagen(color="cian"))
 ChkOpcion6.grid(column=1, row=11, sticky=W)
-ChkOpcion7 = Button(
-    frame_2, text="Magenta", width=20, command=lambda: CargarImagen()
-)
+ChkOpcion7 = Button(frame_2, text="Magenta", width=20, command=lambda: CargarImagen(color="magenta"))
 ChkOpcion7.grid(column=1, row=12, sticky=W)
-ChkOpcion8 = Button(
-    frame_2, text="Amarillo", width=20, command=lambda: CargarImagen()
-)
-ChkOpcion8.grid(column=1, row=13, sticky=W)
+ChkOpcion2 = Button(frame_2, text="Amarillo", width=20, command=lambda: CargarImagen(color="amarillo"))
+ChkOpcion2.grid(column=1, row=13, sticky=W)
+
 
 # Se cre el boton para el brillo
 
